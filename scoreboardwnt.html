@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WNT Style Billiard Scoreboard Custom Logo</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', 'Arial Black', sans-serif;
+        }
+
+        body {
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+            color: #fff;
+        }
+
+        /* Container Utama WNT Style */
+        .wnt-scoreboard {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(180deg, #111827 0%, #030712 100%);
+            border: 2px solid #374151;
+            border-radius: 6px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.8);
+            height: 60px;
+            width: 850px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Box Pemain */
+        .player-card {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            height: 100%;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        /* Foto Pemain */
+        .player-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid #4b5563;
+            background-color: #1f2937;
+            cursor: pointer;
+        }
+
+        /* Detail Pemain (Nama & Bendera/Info) */
+        .player-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            margin: 0 12px;
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .player-name {
+            font-size: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #f9fafb;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            outline: none;
+        }
+
+        .player-sub {
+            font-size: 10px;
+            color: #9ca3af;
+            font-weight: 600;
+            letter-spacing: 1px;
+            outline: none;
+        }
+
+        /* Skor Pemain */
+        .score-box {
+            font-size: 32px;
+            font-weight: 900;
+            width: 50px;
+            text-align: center;
+            background: #1f2937;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fbbf24; /* Warna kuning ala WNT */
+            border-left: 1px solid #374151;
+            border-right: 1px solid #374151;
+            position: relative;
+            user-select: none;
+        }
+
+        /* Tombol Kontrol Skor (Tampil saat Hover) */
+        .score-btn {
+            position: absolute;
+            width: 100%;
+            height: 50%;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .score-box:hover .score-btn { display: flex; }
+        .score-btn.up { top: 0; }
+        .score-btn.down { bottom: 0; background: rgba(220,38,38,0.7); }
+
+        /* Bagian Tengah (Logo & Race Info) */
+        .match-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 110px;
+            background: #0f172a;
+            height: 100%;
+            border-left: 2px solid #ef4444;
+            border-right: 2px solid #ef4444;
+            padding: 0 5px;
+        }
+
+        /* Logo Event di Tengah (Bisa di-klik untuk ganti) */
+        .event-logo {
+            max-height: 24px;
+            max-width: 80px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .event-logo:hover {
+            opacity: 0.8;
+        }
+
+        .race-info {
+            font-size: 9px;
+            color: #94a3b8;
+            font-weight: 700;
+            margin-top: 2px;
+            outline: none;
+            letter-spacing: 0.5px;
+        }
+
+        /* Input File Tersembunyi */
+        input[type="file"] { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="wnt-scoreboard">
+    <!-- PLAYER 1 (Kiri) -->
+    <div class="player-card">
+        <label for="img-p1" title="Klik untuk ganti foto P1">
+            <img src="https://via.placeholder.com/150/1e293b/ffffff?text=P1" id="avatar-p1" class="player-avatar">
+        </label>
+        <input type="file" id="img-p1" accept="image/*" onchange="loadMedia(event, 'avatar-p1')">
+        
+        <div class="player-info">
+            <div class="player-name" contenteditable="true" spellcheck="false">ALEX PAGULAYAN</div>
+            <div class="player-sub" contenteditable="true" spellcheck="false">PHI</div>
+        </div>
+    </div>
+
+    <!-- SKOR P1 -->
+    <div class="score-box">
+        <span id="score-p1">0</span>
+        <div class="score-btn up" onclick="changeScore('p1', 1)">▲</div>
+        <div class="score-btn down" onclick="changeScore('p1', -1)">▼</div>
+    </div>
+
+    <!-- CENTER / LOGO EVENT & RACE -->
+    <div class="match-info">
+        <!-- Klik Logo untuk Ganti Logo Event -->
+        <label for="img-logo" title="Klik untuk ganti logo event">
+            <img src="https://via.placeholder.com/100/0f172a/ef4444?text=LOGO" id="event-logo-img" class="event-logo">
+        </label>
+        <input type="file" id="img-logo" accept="image/*" onchange="loadMedia(event, 'event-logo-img')">
+        
+        <div class="race-info" contenteditable="true" spellcheck="false">RACE TO 9</div>
+    </div>
+
+    <!-- SKOR P2 -->
+    <div class="score-box">
+        <span id="score-p2">0</span>
+        <div class="score-btn up" onclick="changeScore('p2', 1)">▲</div>
+        <div class="score-btn down" onclick="changeScore('p2', -1)">▼</div>
+    </div>
+
+    <!-- PLAYER 2 (Kanan) -->
+    <div class="player-card">
+        <div class="player-info" style="text-align: right;">
+            <div class="player-name" contenteditable="true" spellcheck="false">SHANE VAN BOENING</div>
+            <div class="player-sub" contenteditable="true" spellcheck="false">USA</div>
+        </div>
+        
+        <label for="img-p2" title="Klik untuk ganti foto P2">
+            <img src="https://via.placeholder.com/150/1e293b/ffffff?text=P2" id="avatar-p2" class="player-avatar">
+        </label>
+        <input type="file" id="img-p2" accept="image/*" onchange="loadMedia(event, 'avatar-p2')">
+    </div>
+</div>
+
+<script>
+    // Fungsi Update Skor
+    function changeScore(player, val) {
+        let el = document.getElementById(`score-${player}`);
+        let current = parseInt(el.innerText);
+        if (current + val >= 0) {
+            el.innerText = current + val;
+        }
+    }
+
+    // Fungsi Universal Upload Foto / Logo
+    function loadMedia(event, targetId) {
+        let reader = new FileReader();
+        reader.onload = function(){
+            let output = document.getElementById(targetId);
+            output.src = reader.result;
+        };
+        if(event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+</script>
+
+</body>
+</html>
